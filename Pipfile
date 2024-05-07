@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+opencv-python = "4.9.0.80"
+
+[dev-packages]
+black = "24.4.2"
+jupyterlab = "4.2.0"
+
+[requires]
+python_version = "3.10.14"
