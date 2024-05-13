@@ -2,7 +2,7 @@
 sudo apt update -y
 
 # Install OpenCV for Linux from binaries (since it's faster)
-sudo apt install libopencv-dev python3-opencv -y
+sudo apt install libopencv-dev python3-opencv python3-numba -y
 
-python3 -m venv ~/.smartcam
-source ~/.smartcam/bin/activate
+# python3 -m venv ~/.smartcam
+# source ~/.smartcam/bin/activate
