@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 import time
-from numba import jit
-from line_profiler import profile
 
 
 def load_network(config_path: str, weights_path: str) -> cv2.dnn_Net:
@@ -60,7 +58,6 @@ def setup_camera(fourcc: str, width: int, height: int, fps: int) -> cv2.VideoCap
     return cap
 
 
-@profile
 def detect_objects(
     frame: np.ndarray, net: cv2.dnn_Net, output_layers: list[str]
 ) -> tuple[np.ndarray, int, int]:
@@ -80,7 +77,6 @@ def detect_objects(
     return outs, width, height
 
 
-@jit(nopython=True, cache=False, parallel=False, fastmath=False, nogil=False)
 def process_detections(
     outs, width, height, threshold
 ) -> tuple[list[list[int]], list[float], list[int]]:
@@ -160,7 +156,6 @@ def process_detections_vectorized(outs, width, height, threshold):
     return boxes, confidences, class_ids
 
 
-@profile
 def main():
     """Driver function for object detection"""
     # Load the network, classes, and output layers
@@ -188,9 +183,10 @@ def main():
 
         # Detect objects in the frame and process the detections
         outs, width, height = detect_objects(frame, net, output_layers)
+        print(width, height)
         boxes, confidences, class_ids = process_detections(outs, width, height, 0.5)
 
-        # Drawing boxes and displaying the frames would go here
+        # Apply non-maximum suppression and draw bounding boxes
         indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
         for i in range(len(boxes)):
             if i in indexes:
@@ -210,7 +206,7 @@ def main():
         # Wait for ESC key to break the loop
         if cv2.waitKey(1) == 27:
             break
-        
+
         z += 1
         if z == 100:
             break
