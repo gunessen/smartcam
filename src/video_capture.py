@@ -4,9 +4,9 @@ import cv2
 class VideoCapture:
     """A class to capture video from the camera"""
 
-    def __init__(self, codec="MJPG", width=800, height=600, fps=30):
+    def __init__(self, codec="MJPG", width=800, height=600, fps=15):
         """
-        Setup the camera with the specified codec, resolution, and FPS
+        Setup the camera with the specified codec, resolution, and FPS and create videos directory
 
         :param codec: the codec to capture the video
         :param width: the width of the camera frame
@@ -18,6 +18,18 @@ class VideoCapture:
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self.cap.set(cv2.CAP_PROP_FPS, fps)
+
+    def get_fps(self):
+        """Get the FPS of the camera"""
+        return self.cap.get(cv2.CAP_PROP_FPS)
+
+    def get_frame_width(self):
+        """Get the frame width of the camera"""
+        return self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+
+    def get_frame_height(self):
+        """Get the frame height of the camera"""
+        return self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
     def read_frame(self):
         """Read a frame from the camera"""
