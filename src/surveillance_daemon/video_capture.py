@@ -4,7 +4,7 @@ import cv2
 class VideoCapture:
     """A class to capture video from the camera"""
 
-    def __init__(self, codec="MJPG", width=800, height=600, fps=15):
+    def __init__(self, device=0, codec="MJPG", width=800, height=600, fps=15):
         """
         Setup the camera with the specified codec, resolution, and FPS and create videos directory
 
@@ -13,7 +13,7 @@ class VideoCapture:
         :param height: the height of the camera frame
         :param fps: the FPS of the camera
         """
-        self.cap = cv2.VideoCapture(0, cv2.CAP_ANY)
+        self.cap = cv2.VideoCapture(device, cv2.CAP_ANY)
         self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*codec))
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)

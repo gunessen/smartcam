@@ -4,7 +4,7 @@ import cv2
 class MotionDetector:
     """A class to detect motion in a video stream"""
 
-    def __init__(self, history: int = 20, var_threshold: float = 200):
+    def __init__(self, history: int = 100, threshold: float = 600):
         """
         Initialize the background subtractor with the specified history and variance threshold
 
@@ -12,7 +12,7 @@ class MotionDetector:
         :param var_threshold: the variance threshold for the background model
         """
         self.bg_subtractor = cv2.createBackgroundSubtractorMOG2(
-            history=history, varThreshold=var_threshold
+            history=history, varThreshold=threshold
         )
 
     def detect_motion(self, frame) -> bool:

@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import numpy as np
 
@@ -141,6 +143,8 @@ class ObjectDetector:
         :param boxes: the bounding boxes
         :param confidences: the confidences of the detections
         :param class_ids: the class IDs of the detections
+        :param use_nms: whether to use non-maximum suppression, if not requested, all detections
+            including overlapping ones will be returned
         :return: the object details
         """
         object_details = []
@@ -173,3 +177,69 @@ class ObjectDetector:
             cv2.putText(frame, f"{label} {confidence:.2f}", (x, y - 5), font, 0.5, color, 2)
 
         return frame
+
+    def process_frame(self, frame: np.ndarray, threshold=0.5):
+        """
+        Process the frame and return the frame with bounding boxes around detected objects
+
+        :param frame: the frame to process
+        :param threshold: the confidence threshold
+        :return: the processed frame
+        """
+        outs = self.detect_objects(frame)
+        boxes, confidences, class_ids = self.process_detections_vectorized(outs, frame, threshold)
+        object_details = self.get_object_details(boxes, confidences, class_ids)
+        return object_details
+
+    def process_video(self, video_path: str, threshold=0.5, codec="XVID") -> set[str]:
+        """
+        Process and save the video and write the detected objects to the video
+        into the database
+
+        :param video_path: the path to the video
+        :param threshold: the confidence threshold
+        :return: the detected objects and the path to the annotated video
+        """
+        cap = cv2.VideoCapture(video_path)
+        if not cap.isOpened():
+            print(f"Failed to open video: {video_path}")
+            return
+
+        # Get the frame width, height, and FPS
+        frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps = int(cap.get(cv2.CAP_PROP_FPS))
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+        # Define the output path
+        base_name = os.path.splitext(video_path)[0]
+        extension = os.path.splitext(video_path)[1]
+        output_path = f"{base_name}_annotated{extension}"
+
+        out = cv2.VideoWriter(
+            output_path,
+            cv2.VideoWriter_fourcc(*codec),
+            fps,
+            (frame_width, frame_height),
+        )
+
+        processed_frames = 0
+        detected_objects = set()
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            object_details = self.process_frame(frame, threshold)
+            for label, _, _ in object_details:
+                detected_objects.add(label)
+            frame = self.draw_frame_bounding_boxes(frame, object_details)
+            out.write(frame)
+
+            processed_frames += 1
+            print(f"Processed {processed_frames}/{total_frames} frames", end="\r")
+
+        cap.release()
+        out.release()
+
+        return detected_objects, output_path

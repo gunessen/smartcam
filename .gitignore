@@ -2,3 +2,5 @@ keys/
 models/
 data/
 __pycache__/
+videos/
+*.avi
