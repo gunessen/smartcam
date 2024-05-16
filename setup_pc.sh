@@ -16,4 +16,8 @@ python -m pip install SQLAlchemy==2.0.30
 # Install formatter/linter
 python -m pip install black==24.4.2 
 python -m pip install flake8==6.1.0
+python -m pip install Flask==3.0.3
+python -m pip install Flask-SQLAlchemy==3.1.1
+python -m pip install marshmallow==3.21.2
+python -m pip install Flask-Cors==4.0.1
 # python -m pip install line-profiler==4.1.3

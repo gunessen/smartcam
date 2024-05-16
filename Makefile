@@ -9,3 +9,9 @@ copy_pubkey_to_rpi:
 
 connect:
 	ssh -i ./keys/id_rsa matrik@raspberrypi
+
+start_backend:
+	PYTHONPATH=src flask --app=src/backend/app run
+
+start_frontend:
+	cd src/frontend && GENERATE_SOURCEMAP=false npm start
