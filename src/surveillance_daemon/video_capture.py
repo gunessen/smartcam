@@ -2,7 +2,7 @@ import cv2
 
 
 class VideoCapture:
-    """A class to capture video from the camera"""
+    """A class to capture video from the camera using context management."""
 
     def __init__(self, device=0, codec="MJPG", width=800, height=600, fps=15):
         """
@@ -13,11 +13,27 @@ class VideoCapture:
         :param height: the height of the camera frame
         :param fps: the FPS of the camera
         """
-        self.cap = cv2.VideoCapture(device, cv2.CAP_ANY)
-        self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*codec))
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self.cap.set(cv2.CAP_PROP_FPS, fps)
+        self.device = device
+        self.codec = codec
+        self.width = width
+        self.height = height
+        self.fps = fps
+        self.cap = None
+
+    def __enter__(self):
+        """Open the camera when entering the context"""
+        self.cap = cv2.VideoCapture(self.device, cv2.CAP_ANY)
+        self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*self.codec))
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+        self.cap.set(cv2.CAP_PROP_FPS, self.fps)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Release the camera when exiting the context"""
+        if self.cap:
+            print("Releasing camera")
+            self.release()
 
     def get_fps(self):
         """Get the FPS of the camera"""

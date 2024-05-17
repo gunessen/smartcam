@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from backend.routes.events import events_bp
+from backend.routes.livefeed import livefeed_bp
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -15,8 +16,11 @@ db = SQLAlchemy(app)
 
 # Register blueprints
 app.register_blueprint(events_bp)
+app.register_blueprint(livefeed_bp)
+
 
 # Create all tables in the database and start the application
 if __name__ == "__main__":
-    db.create_all()
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True, threaded=True)
