@@ -19,8 +19,8 @@ const EventDetails = () => {
 
   const breadcrumbItems = [
     { href: "/", label: "Home" },
-    { href: "/events", label: "Events" },
-    { href: `/events/${id}`, label: "Event Details", isCurrentPage: true },
+    { href: "#/events", label: "Events" },
+    { href: `#/events/${id}`, label: "Event Details", isCurrentPage: true },
   ];
 
   if (!event) {

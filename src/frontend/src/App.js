@@ -1,4 +1,4 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 
 import { Box, Grid } from "@chakra-ui/react";
 import "./App.css";
