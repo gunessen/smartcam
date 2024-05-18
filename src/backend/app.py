@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from backend.routes.events import events_bp
 from backend.routes.livefeed import livefeed_bp
+from backend.routes.stats import stats_bp
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -17,6 +18,7 @@ db = SQLAlchemy(app)
 # Register blueprints
 app.register_blueprint(events_bp)
 app.register_blueprint(livefeed_bp)
+app.register_blueprint(stats_bp)
 
 
 # Create all tables in the database and start the application

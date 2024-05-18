@@ -27,9 +27,6 @@ const EventDetails = () => {
     return <Text>Loading...</Text>;
   }
 
-  const videoUrl = `/api/v1/events/${id}/video`;
-  console.log("Video URL:", videoUrl);
-
   return (
     <Box p={5} maxW="800px" mx="auto">
       <Breadcrumbs items={breadcrumbItems} />
@@ -56,7 +53,7 @@ const EventDetails = () => {
           </HStack>
           <Box mt={4} width="100%">
             <video controls width="100%">
-              <source src={videoUrl} type="video/mp4" />
+              <source src={`/api/v1/events/${id}/video`} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </Box>
