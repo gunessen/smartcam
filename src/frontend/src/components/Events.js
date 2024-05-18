@@ -37,7 +37,7 @@ const Events = () => {
       <Breadcrumbs items={breadcrumbItems} />
       <List spacing={3}>
         {events.map((event) => (
-          <Link href={`#${event.id}`} _hover={{ textDecoration: "none" }} key={event.id}>
+          <Link as="a" href={`events/${event.id}`} _hover={{ textDecoration: "none" }} key={event.id}>
             <ListItem p={3} shadow="md" borderWidth="1px" borderRadius="md" mb={3} _hover={{ bg: "teal.50" }}>
               <VStack align="start" spacing={2}>
                 <Heading size="md" color="teal.700">

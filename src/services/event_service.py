@@ -33,3 +33,16 @@ def get_events():
     events = session.query(Event).all()
     session.close()
     return events
+
+
+def get_event(event_id: int):
+    """
+    Get a specific event from the database.
+
+    :param event_id: the id of the event to get
+    :return: the event
+    """
+    session = Session()
+    event = session.query(Event).filter(Event.id == event_id).first()
+    session.close()
+    return event

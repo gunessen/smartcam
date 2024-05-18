@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 db_path = os.path.join(
     os.path.abspath(os.path.dirname(os.path.dirname(__file__))), "smartcam.sqlite"
 )
-engine = create_engine(f"sqlite:///{db_path}", echo=True)
+engine = create_engine(f"sqlite:///{db_path}", echo=False)
 
 # Base class for custom models
 Base = declarative_base()

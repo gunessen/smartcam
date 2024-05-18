@@ -8,7 +8,7 @@ class VideoRecorder:
     """Class to record video of the environment."""
 
     def __init__(
-        self, codec="XVID", extension="avi", folder="videos", width=800, height=600, fps=15
+        self, codec="VP80", extension="webm", folder="videos", width=800, height=600, fps=15
     ):
         """
         Create the video directory and initialize the video recorder with the specified codec,

@@ -189,7 +189,7 @@ class ObjectDetector:
         object_details = self.get_object_details(boxes, confidences, class_ids)
         return object_details
 
-    def process_video(self, video_path: str, threshold=0.5, codec="XVID") -> set[str]:
+    def process_video(self, video_path: str, threshold=0.5, codec="VP80") -> set[str]:
         """
         Process and save the video and write the detected objects to the video
         into the database
