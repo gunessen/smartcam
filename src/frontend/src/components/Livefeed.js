@@ -4,8 +4,8 @@ import Breadcrumbs from "./Breadcrumbs";
 
 const Livefeed = () => {
   useEffect(() => {
-    // Stop the live feed when the component is unmounted
-    const handleUnload = async () => {
+    // Use cleanup function to stop the live feed
+    const handleStopLivefeed = async () => {
       try {
         await axios.post("/api/v1/livefeed/stop");
       } catch (error) {
@@ -13,10 +13,9 @@ const Livefeed = () => {
       }
     };
 
-    window.addEventListener("beforeunload", handleUnload);
-
+    // Stop the live feed when the component is unmounted
     return () => {
-      window.removeEventListener("beforeunload", handleUnload);
+      handleStopLivefeed();
     };
   }, []);
 
