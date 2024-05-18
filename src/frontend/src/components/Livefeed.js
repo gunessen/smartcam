@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import Breadcrumbs from "./Breadcrumbs";
 
 const Livefeed = () => {
   useEffect(() => {
@@ -19,9 +20,14 @@ const Livefeed = () => {
     };
   }, []);
 
+  const breadcrumbItems = [
+    { href: "/", label: "Home" },
+    { href: "/livefeed", label: "Livefeed", isCurrentPage: true },
+  ];
+
   return (
     <div>
-      <h1>Livefeed</h1>
+      <Breadcrumbs items={breadcrumbItems} />
       <img src="/api/v1/livefeed" alt="Livefeed" />
     </div>
   );

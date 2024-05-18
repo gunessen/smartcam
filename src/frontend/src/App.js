@@ -1,30 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import { Col, Container, Row } from "react-bootstrap";
+import { Box, Grid } from "@chakra-ui/react";
 import "./App.css";
-// import Events from "./components/Events";
-import Events from "./components/Events";
 import Sidebar from "./components/Sidebar";
-import Livefeed from "./components/Livefeed";
-import Dashboard from "./components/Dashboard";
+import MainContent from "./components/MainContent";
 
 const App = () => {
   return (
     <Router>
-      <Container fluid>
-        <Row>
-          <Col md={3}>
-            <Sidebar />
-          </Col>
-          <Col md={9}>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/livefeed" element={<Livefeed />} />
-              <Route path="/events" element={<Events />} />
-            </Routes>
-          </Col>
-        </Row>
-      </Container>
+      <Box p={4}>
+        <Grid templateColumns="200px 1fr" gap={6}>
+          <Sidebar />
+          <MainContent />
+        </Grid>
+      </Box>
     </Router>
   );
 };

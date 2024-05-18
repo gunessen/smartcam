@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles.css";
+import { Box, Heading, Link, List, ListItem, Text, VStack, HStack } from "@chakra-ui/react";
+import Breadcrumbs from "./Breadcrumbs";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -27,28 +27,40 @@ const Events = () => {
     return objects.toString();
   };
 
+  const breadcrumbItems = [
+    { href: "/", label: "Home" },
+    { href: "/events", label: "Events", isCurrentPage: true },
+  ];
+
   return (
-    <div className="container mt-5">
-      <h1>Events</h1>
-      <ul className="list-group">
+    <Box p={5} maxW="800px" mx="auto">
+      <Breadcrumbs items={breadcrumbItems} />
+      <List spacing={3}>
         {events.map((event) => (
-          <a href="#{event.id}" className="list-group-item">
-            <div className="row">
-              <h4 class="list-group-item-heading">Detected: {formatObjects(event.objects)}</h4>
-              <p class="list-group-item-text">
-                <strong>Video path</strong>: {event.video_path}
-              </p>
-              <p class="list-group-item-text">
-                <strong>Event time</strong>: {event.event_time}
-              </p>
-              <p class="list-group-item-text">
-                <strong>Video length</strong>: {event.video_length}
-              </p>
-            </div>
-          </a>
+          <Link href={`#${event.id}`} _hover={{ textDecoration: "none" }} key={event.id}>
+            <ListItem p={3} shadow="md" borderWidth="1px" borderRadius="md" mb={3} _hover={{ bg: "teal.50" }}>
+              <VStack align="start" spacing={2}>
+                <Heading size="md" color="teal.700">
+                  Detected: {formatObjects(event.objects)}
+                </Heading>
+                <HStack>
+                  <Text fontWeight="bold">Video path:</Text>
+                  <Text>{event.video_path}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Event time:</Text>
+                  <Text>{event.event_time}</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold">Video length:</Text>
+                  <Text>{event.video_length}</Text>
+                </HStack>
+              </VStack>
+            </ListItem>
+          </Link>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 };
 

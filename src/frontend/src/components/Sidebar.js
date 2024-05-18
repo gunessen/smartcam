@@ -1,23 +1,38 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import "../styles.css";
+import { VStack, Button } from "@chakra-ui/react";
 
 const Sidebar = () => {
   return (
-    <div className="d-flex flex-column p-3 bg-light" style={{ width: "250px", height: "100vh" }}>
-      <Nav className="flex-column">
-        <NavLink to="/" activeClassName="nav-link active" class="nav-link">
-          Dashboard
-        </NavLink>
-        <NavLink to="/livefeed" activeClassName="nav-link active" class="nav-link">
-          Livefeed
-        </NavLink>
-        <NavLink to="/events" activeClassName="nav-link active" class="nav-link">
-          Events
-        </NavLink>
-      </Nav>
-    </div>
+    <VStack as="nav" bg="gray.100" p={4} borderRadius="md" spacing={4} align="stretch">
+      <Button
+        as={NavLink}
+        to="/"
+        colorScheme="teal"
+        variant="ghost"
+        _activeLink={{ fontWeight: "bold", color: "teal.600", bg: "teal.200" }}
+      >
+        Dashboard
+      </Button>
+      <Button
+        as={NavLink}
+        to="/livefeed"
+        colorScheme="teal"
+        variant="ghost"
+        _activeLink={{ fontWeight: "bold", color: "teal.600", bg: "teal.200" }}
+      >
+        Livefeed
+      </Button>
+      <Button
+        as={NavLink}
+        to="/events"
+        colorScheme="teal"
+        variant="ghost"
+        _activeLink={{ fontWeight: "bold", color: "teal.600", bg: "teal.200" }}
+      >
+        Events
+      </Button>
+    </VStack>
   );
 };
 

@@ -1,9 +1,12 @@
 import React from "react";
+import Breadcrumbs from "./Breadcrumbs";
 
 const Dashboard = () => {
+  const breadcrumbItems = [{ href: "/", label: "Home", isCurrentPage: true }];
+
   return (
     <div>
-      <h1>Dashboard</h1>
+      <Breadcrumbs items={breadcrumbItems} />
       <p>All systems operational</p>
     </div>
   );
