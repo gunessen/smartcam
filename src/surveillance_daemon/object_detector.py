@@ -1,5 +1,3 @@
-import os
-
 import cv2
 import numpy as np
 
@@ -212,9 +210,7 @@ class ObjectDetector:
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
         # Define the output path
-        base_name = os.path.splitext(video_path)[0]
-        extension = os.path.splitext(video_path)[1]
-        output_path = f"{base_name}_annotated{extension}"
+        output_path = video_path.replace("_unannotated", "")
 
         out = cv2.VideoWriter(
             output_path,

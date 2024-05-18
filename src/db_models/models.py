@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String
 
 from .base import Base
 
@@ -11,4 +11,6 @@ class Event(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     video_path = Column(String, nullable=False)
     objects = Column(String, nullable=True)
+    event_time = Column(DateTime, nullable=False)
+    video_length = Column(Integer, nullable=False)
     created_at = Column(String, nullable=False, default=datetime.datetime.now(datetime.UTC))

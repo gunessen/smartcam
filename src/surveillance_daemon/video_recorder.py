@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import UTC, datetime
 
 import cv2
 
@@ -15,9 +15,8 @@ class VideoRecorder:
         resolution, and FPS.
         """
         os.makedirs(folder, exist_ok=True)
-        self.output_path = (
-            f"{folder}/{datetime.now().strftime('%Y-%m-%dT%H:%M:%S').replace(' ', '')}.{extension}"
-        )
+        date_string = f"{folder}/{datetime.now(UTC).strftime('%Y-%m-%dT%H:%M:%S').replace(' ', '')}"
+        self.output_path = f"{date_string}_unannotated.{extension}"
         self.out = cv2.VideoWriter(
             self.output_path,
             cv2.VideoWriter_fourcc(*codec),

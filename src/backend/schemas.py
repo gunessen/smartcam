@@ -7,3 +7,5 @@ class EventSchema(Schema):
     id = fields.Int()
     video_path = fields.Str()
     objects = fields.Str()
+    event_time = fields.DateTime()
+    video_length = fields.Int()
