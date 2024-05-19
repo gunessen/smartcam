@@ -3,7 +3,7 @@ import queue
 import threading
 from datetime import UTC, datetime
 
-from db_models.init_db import create_tables
+from db_models.base import create_tables
 from services.event_service import add_event
 from surveillance_daemon.motion_detector import MotionDetector
 from surveillance_daemon.notification import Notification

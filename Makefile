@@ -26,4 +26,4 @@ build_frontend:
 	cd src/frontend && GENERATE_SOURCEMAP=false npm run build
 
 cleanup:
-	rm videos/* && rm src/smartcam.sqlite
+	rm videos/* || rm src/smartcam.sqlite

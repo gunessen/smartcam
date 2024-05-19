@@ -3,6 +3,7 @@ import os
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 
+import db_models.base
 from backend.routes.events import events_bp
 from backend.routes.livefeed import livefeed_bp
 from backend.routes.stats import stats_bp
@@ -21,7 +22,9 @@ else:
 # Initialize the SQLite database
 db_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "smartcam.sqlite")
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, model_class=db_models.base.Base)
+db_models.base.create_tables()
+
 
 # Register blueprints
 app.register_blueprint(events_bp)
@@ -41,7 +44,4 @@ def serve(path):
 
 # Create all tables in the database and start the application
 if __name__ == "__main__":
-    with app.app_context():
-        print("Creating database tables...")
-        db.create_all()
     app.run(debug=bool(os.environ.get("DEBUG", 1)), threaded=True)
