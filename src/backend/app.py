@@ -33,17 +33,15 @@ app.register_blueprint(stats_bp)
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>", methods=["GET"])
 def serve(path):
-    print("inside serve")
     if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        print("inside first if")
         return send_from_directory(app.static_folder, path)
     else:
-        print("inside else")
         return send_from_directory(app.static_folder, "index.html")
 
 
 # Create all tables in the database and start the application
 if __name__ == "__main__":
     with app.app_context():
+        print("Creating database tables...")
         db.create_all()
     app.run(debug=bool(os.environ.get("DEBUG", 1)), threaded=True)

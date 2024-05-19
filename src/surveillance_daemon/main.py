@@ -1,12 +1,8 @@
 import os
 import queue
-
-# import sys
 import threading
 from datetime import UTC, datetime
 
-# Add the src directory to the sys.path list
-# sys.path.insert(0, os.path.abspath("../src"))
 from db_models.init_db import create_tables
 from services.event_service import add_event
 from surveillance_daemon.motion_detector import MotionDetector
@@ -89,11 +85,17 @@ def main():
                     recording = True
                     event_time = datetime.now(UTC)
                     video_recorder = VideoRecorder(
-                        folder="/home/matrik/Yandex.Disk/CM3070_FP/code/videos",
+                        folder=os.path.join(
+                            os.path.abspath(
+                                os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+                            ),
+                            "videos",
+                        ),
                         fps=camera.get_fps(),
                         width=camera.get_frame_width(),
                         height=camera.get_frame_height(),
                     )
+                    video_recorder.start_recording()
 
             # Record video for 5 seconds
             if recording:
@@ -102,6 +104,7 @@ def main():
                 video_length = (datetime.now(UTC) - event_time).total_seconds()
                 if video_length > 5:
                     print("Stop recording.")
+                    video_recorder.stop_recording()
                     # Start object detection on a separate thread when video recording stops
                     video_queue.put(
                         (video_recorder.get_video_path(), int(video_length), event_time)

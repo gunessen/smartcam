@@ -4,7 +4,7 @@ import cv2
 class VideoCapture:
     """A class to capture video from the camera using context management."""
 
-    def __init__(self, device=0, codec="MJPG", width=800, height=600, fps=15):
+    def __init__(self, device=0, codec="MJPG", width=800, height=600, fps=10):
         """
         Setup the camera with the specified codec, resolution, and FPS and create videos directory
 

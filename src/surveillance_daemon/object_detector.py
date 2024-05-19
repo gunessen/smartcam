@@ -189,7 +189,13 @@ class ObjectDetector:
         object_details = self.get_object_details(boxes, confidences, class_ids)
         return object_details
 
-    def process_video(self, video_path: str, threshold=0.5, codec="VP80") -> set[str]:
+    def process_video(
+        self,
+        video_path: str,
+        threshold=0.5,
+        output_codec="VP80",
+        output_ext="webm",
+    ) -> set[str]:
         """
         Process and save the video and write the detected objects to the video
         into the database
@@ -210,11 +216,11 @@ class ObjectDetector:
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
         # Define the output path
-        output_path = video_path.replace("_unannotated", "")
+        output_path = video_path.replace("_unannotated.avi", f".{output_ext}")
 
         out = cv2.VideoWriter(
             output_path,
-            cv2.VideoWriter_fourcc(*codec),
+            cv2.VideoWriter_fourcc(*output_codec),
             fps,
             (frame_width, frame_height),
         )
@@ -233,8 +239,9 @@ class ObjectDetector:
             out.write(frame)
 
             processed_frames += 1
-            print(f"Processed {processed_frames}/{total_frames} frames", end="\r")
+            print(f"Processed {processed_frames}/{total_frames} frames", end="\n")
 
+        print(f"Released the video: {output_path}")
         cap.release()
         out.release()
 
