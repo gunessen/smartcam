@@ -7,3 +7,4 @@ videos/
 *.mp4
 *.webm
 node_modules/
+_archive/

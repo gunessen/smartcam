@@ -14,7 +14,7 @@ class EventSchema(Schema):
 class StatsSchema(Schema):
     """Serialize and deserialize the Stats object."""
 
-    cpu_percent = fields.Int()
+    cpu_percent = fields.Decimal()
     ram_used_mb = fields.Int()
     ram_total_mb = fields.Int()
     ram_percent = fields.Int()
