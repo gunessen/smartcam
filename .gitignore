@@ -8,3 +8,7 @@ videos/
 *.webm
 node_modules/
 _archive/
+Labels/
+src/yolov7/
+*.zip
+Objects365/
