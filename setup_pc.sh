@@ -25,7 +25,7 @@ python -m pip install Flask-Cors==4.0.1
 # python -m pip install matplotlib seaborn scipy onnx
 # python -m pip install onnx-tf 
 # python -m pip install tensorflow-probability==0.23.0
-# python -m pip install tensorflow==2.15.0
+python -m pip install tensorflow==2.15.0
 # python -m pip install tf_keras==2.15.0
 # python -m pip install tensorflow-addons==0.23.0
 
@@ -33,7 +33,7 @@ python -m pip install Flask-Cors==4.0.1
 # python -m pip install line_profiler
 
 # install tflite-support for streamlined conversion of models to tflite
-python -m pip install tflite-support==0.4.4
+# python -m pip install tflite-support==0.4.4
 
 
 # Install formatter/linter/profiler (for development)
@@ -42,5 +42,5 @@ python -m pip install tflite-support==0.4.4
 # python -m pip install line-profiler==4.1.3
 
 # Install SQLite
-python -m pip install pysqlite3==0.5.3
+# python -m pip install pysqlite3==0.5.3
 python -m pip install pycocotools==2.0.8

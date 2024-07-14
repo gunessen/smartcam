@@ -1,5 +1,5 @@
 sync:
-	rsync -avz -e "ssh -i ./keys/id_rsa" --exclude '.git' --exclude 'keys' --exclude 'node_modules' --exclude 'videos' --exclude 'smartcam.sqlite' --progress  /home/matrik/Yandex.Disk/CM3070_FP/code matrik@raspberrypi:/home/matrik
+	rsync -avz -e "ssh -i ./keys/id_rsa" --exclude '.git' --exclude 'keys' --exclude 'node_modules' --exclude 'videos' --exclude 'smartcam.sqlite' --exclude 'full-ds' --progress /home/matrik/Yandex.Disk/CM3070_FP/code matrik@raspberrypi:/home/matrik
 
 generate_key:
 	ssh-keygen -t rsa -b 2048
@@ -27,3 +27,15 @@ build_frontend:
 
 cleanup:
 	rm videos/* || rm src/smartcam.sqlite
+
+dl_yolov7_weights:
+	cd model_conversion/yolov7 && wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7-tiny.pt
+
+convert_yolov7_onnx:
+	cd model_conversion/yolov7 && python export.py --weights yolov7-tiny.pt --grid --end2end --simplify --topk-all 100 --iou-thres 0.65 --conf-thres 0.35 --img-size 640 640 --max-wh 640
+
+convert_yolov_tf:
+	cd model_conversion/yolov7 && onnx-tf convert -i yolov7-tiny.onnx -o weights
+
+convert_yolov_tf_to_tflite:
+	cd model_conversion/yolov7 && python tf_to_tflite.py
