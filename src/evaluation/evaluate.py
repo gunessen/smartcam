@@ -3,59 +3,8 @@ import json
 
 import cv2
 import numpy as np
-from object_detector import ObjectDetector
 
-model_config = {
-    "efficientdet-lite4": {
-        "model_path": "../../models/efficientdet-lite/efficientdet-lite4-detection-default.tflite",
-        "input_width": 640,
-        "input_height": 640,
-        "classes_path": "../../data/coco-efficientdet.names",
-        "is_yolo": False,
-    },
-    "efficientdet-lite3": {
-        "model_path": "../../models/efficientdet-lite/efficientdet-lite3-detection-default.tflite",
-        "input_width": 512,
-        "input_height": 512,
-        "classes_path": "../../data/coco-efficientdet.names",
-        "is_yolo": False,
-    },
-    "efficientdet-lite2": {
-        "model_path": "../../models/efficientdet-lite/efficientdet-lite2-detection-default.tflite",
-        "input_width": 448,
-        "input_height": 448,
-        "classes_path": "../../data/coco-efficientdet.names",
-        "is_yolo": False,
-    },
-    "efficientdet-lite1": {
-        "model_path": "../../models/efficientdet-lite/efficientdet-lite1-detection-default.tflite",
-        "input_width": 384,
-        "input_height": 384,
-        "classes_path": "../../data/coco-efficientdet.names",
-        "is_yolo": False,
-    },
-    "ssd-mobilenet-v1": {
-        "model_path": "../../models/mobilenetv1/ssd-mobilenet-v1-default.tflite",
-        "input_width": 300,
-        "input_height": 300,
-        "classes_path": "../../data/coco-efficientdet.names",
-        "is_yolo": False,
-    },
-    "yolov5-small": {
-        "model_path": "../../models/yolov5-small/yolov5-small.tflite",
-        "input_width": 320,
-        "input_height": 320,
-        "classes_path": "../../data/coco.names",
-        "is_yolo": True,
-    },
-    "yolov5-nano": {
-        "model_path": "../../models/yolov5/yolov5n-fp16.tflite",
-        "input_width": 320,
-        "input_height": 320,
-        "classes_path": "../../data/coco.names",
-        "is_yolo": True,
-    },
-}
+from surveillance_daemon.object_detector import ModelConfig, ObjectDetector
 
 parser = argparse.ArgumentParser(description="Evaluate the object detector")
 parser.add_argument(
@@ -78,7 +27,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-CURRENT_MODEL = model_config[args.model]
+CURRENT_MODEL = ModelConfig.get_config(args.model)
 
 object_detector = ObjectDetector(
     model_path=CURRENT_MODEL["model_path"],
@@ -91,7 +40,7 @@ object_detector = ObjectDetector(
 
 print(f"Using model: {args.model}")
 
-with open("Objects365/test/filtered_data_coco.json", "r") as f:
+with open("evaluation/Objects365/test/filtered_data_coco.json", "r") as f:
     ds = json.load(f)
 
 # Store COCO detection results
@@ -111,7 +60,7 @@ batch_size = args.batch_size
 
 for i, img in enumerate(ds["images"]):
     # Read the frame and resize it
-    frame = cv2.imread(f"./Objects365/test/small-ds/{img['file_name']}")
+    frame = cv2.imread(f"evaluation/Objects365/test/small-ds/{img['file_name']}")
     frame_height, frame_width, _ = frame.shape
     frame_resized = cv2.resize(frame, (CURRENT_MODEL["input_width"], CURRENT_MODEL["input_height"]))
     input_data = np.expand_dims(frame_resized, axis=0)

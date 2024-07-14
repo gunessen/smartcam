@@ -28,7 +28,7 @@ class VideoRecorder:
         )
 
         # Initialize the frame queue and start the recording thread
-        self.frame_queue = queue.Queue()
+        self.captured_frames_queue = queue.Queue()
         self.recording = False
         self.stop_event = threading.Event()
         self.thread = threading.Thread(target=self._write_frames)
@@ -38,7 +38,7 @@ class VideoRecorder:
         """Processing loop to write frames to the video from the queue."""
         while not self.stop_event.is_set():
             try:
-                frame = self.frame_queue.get(timeout=0.1)
+                frame = self.captured_frames_queue.get(timeout=0.1)
                 print(f"Writing frame to the video: {self.output_path}")
                 self.out.write(frame)
             except queue.Empty:
@@ -48,7 +48,7 @@ class VideoRecorder:
         """Write a frame to the video."""
         if self.recording:
             print("Adding frame to the queue")
-            self.frame_queue.put(frame)
+            self.captured_frames_queue.put(frame)
 
     def release(self):
         """Release the video."""
@@ -57,8 +57,8 @@ class VideoRecorder:
         self.thread.join()
 
         # Process any remaining frames in the queue
-        while not self.frame_queue.empty():
-            frame = self.frame_queue.get()
+        while not self.captured_frames_queue.empty():
+            frame = self.captured_frames_queue.get()
             self.out.write(frame)
 
         self.out.release()

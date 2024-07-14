@@ -1,25 +1,48 @@
 {
   "version": "0.2.0",
   "configurations": [
-      {
-          "name": "Python: Flask",
-          "type": "python",
-          "request": "launch",
-          "program": "${workspaceFolder}/src/backend/app.py",
-          "args": [
-              "run",
-              "--no-debugger",
-              "--no-reload"
-          ],
-          "jinja": true,
-          "env": {
-              "FLASK_APP": "src/backend/app.py",
-              "FLASK_ENV": "development",
-              "PYTHONPATH": "${workspaceFolder}/src"
-          },
-          "envFile": "${workspaceFolder}/.env",
-          "console": "integratedTerminal",
-          "justMyCode": true
-      }
+    {
+      "name": "Python: Flask",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/backend/app.py",
+      "args": ["run", "--no-debugger", "--no-reload"],
+      "jinja": true,
+      "env": {
+        "FLASK_APP": "src/backend/app.py",
+        "FLASK_ENV": "development",
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Evaluation",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/evaluation/evaluate.py",
+      "args": [],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}/src"
+    },
+    {
+      "name": "Python: Daemon",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/surveillance_daemon/main.py",
+      "args": [],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      },
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
   ]
 }

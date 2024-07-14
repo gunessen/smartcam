@@ -3,31 +3,32 @@ import queue
 import threading
 from datetime import UTC, datetime
 
+from object_detector import ModelConfig, ObjectDetector
+
 from db_models.base import create_tables
 from services.event_service import add_event
 from surveillance_daemon.motion_detector import MotionDetector
 from surveillance_daemon.notification import Notification
-from surveillance_daemon.object_detector import ObjectDetector
 from surveillance_daemon.video_capture import VideoCapture
 from surveillance_daemon.video_recorder import VideoRecorder
-
-# import cv2
-
 
 # Initialize the database session
 create_tables()
 
-# Initialize system components
+current_model = ModelConfig.get_config("efficientdet-lite1")
 object_detector = ObjectDetector(
-    "../models/yolov7-tiny/yolov7-tiny.cfg",
-    "../models/yolov7-tiny/yolov7-tiny.weights",
-    "../data/coco.names",
+    model_path=current_model["model_path"],
+    input_width=current_model["input_width"],
+    input_height=current_model["input_height"],
+    classes_path=current_model["classes_path"],
+    is_yolo=current_model["is_yolo"],
+    num_threads=4,
 )
 motion_detector = MotionDetector()
 notification = Notification(to_email="gunes314@gmail.com")
 
 # Queue to store video paths to be processed
-video_queue = queue.Queue()
+unannotated_video_queue = queue.Queue()
 
 
 def worker():
@@ -35,12 +36,18 @@ def worker():
     while True:
         print("Start object detection worker.")
         # Unpack the video information from the queue
-        raw_video_path, video_length, event_time = video_queue.get()
+        raw_video_path, video_length, event_time = unannotated_video_queue.get()
+
+        # Break the loop if the raw_video_path is None
         if raw_video_path is None:
+            # Indicate that the task is done before breaking
+            unannotated_video_queue.task_done()
             break
 
         # Perform object detection on the unannotated video
-        detected_objects, video_path = object_detector.process_video(raw_video_path)
+        detected_objects, video_path, _ = object_detector.process_video(
+            in_video_path=raw_video_path, store_out_video=True
+        )
         print(video_path)
 
         # Add the event to the database
@@ -52,7 +59,17 @@ def worker():
         # send a notification if an object is detected
         if detected_objects:
             notification.send(detected_objects)
-        video_queue.task_done()
+        unannotated_video_queue.task_done()
+
+
+def stop_workers():
+    """Stop worker threads gracefully"""
+    # Add None to the queue to signal the worker to exit
+    for _ in range(num_worker_threads):
+        unannotated_video_queue.put(None)
+    # Wait for all threads to finish
+    for t in threads:
+        t.join()
 
 
 # Create and start the worker thread
@@ -68,9 +85,14 @@ def main():
     recording = False
     event_time = None
 
+    # Start the camera
     with VideoCapture(device=0) as camera:
+        # Frame processing loop
         while True:
+            # Read the frame from the camera
             frame = camera.read_frame()
+
+            # Break the loop if the frame is None
             if frame is None:
                 break
 
@@ -106,7 +128,7 @@ def main():
                     print("Stop recording.")
                     video_recorder.stop_recording()
                     # Start object detection on a separate thread when video recording stops
-                    video_queue.put(
+                    unannotated_video_queue.put(
                         (video_recorder.get_video_path(), int(video_length), event_time)
                     )
 
@@ -123,4 +145,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        stop_workers()
+        print("Exiting surveillance daemon.")

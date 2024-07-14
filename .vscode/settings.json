@@ -19,4 +19,5 @@
     }
   },
   "eslint.format.enable": true,
+  "workbench.editor.enablePreview": false
 }
