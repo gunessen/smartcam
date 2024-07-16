@@ -46,3 +46,15 @@ def get_event(event_id: int):
     event = session.query(Event).filter(Event.id == event_id).first()
     session.close()
     return event
+
+
+def delete_events(event_ids):
+    """
+    Delete events from the database.
+
+    :param event_ids: the ids of the events to delete
+    """
+    session = Session()
+    session.query(Event).filter(Event.id.in_(event_ids)).delete(synchronize_session=False)
+    session.commit()
+    session.close()
