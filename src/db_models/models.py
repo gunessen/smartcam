@@ -14,3 +14,13 @@ class Event(Base):
     event_time = Column(DateTime, nullable=False)
     video_length = Column(Integer, nullable=False)
     created_at = Column(String, nullable=False, default=datetime.datetime.now(datetime.UTC))
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String, nullable=False)
+    password = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    created_at = Column(String, nullable=False, default=datetime.datetime.now(datetime.UTC))

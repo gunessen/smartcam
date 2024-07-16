@@ -1,8 +1,17 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { VStack, Button } from "@chakra-ui/react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Sidebar = () => {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <VStack as="nav" bg="gray.100" p={4} borderRadius="md" spacing={4} align="stretch">
       <Button
@@ -31,6 +40,9 @@ const Sidebar = () => {
         _activeLink={{ fontWeight: "bold", color: "teal.600", bg: "teal.200" }}
       >
         Events
+      </Button>
+      <Button onClick={handleLogout} colorScheme="teal" variant="ghost">
+        Logout
       </Button>
     </VStack>
   );

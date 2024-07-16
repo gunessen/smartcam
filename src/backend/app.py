@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 import db_models.base
 from backend.routes.events import events_bp
 from backend.routes.livefeed import livefeed_bp
+from backend.routes.login import login_bp
 from backend.routes.stats import stats_bp
 
 if os.environ.get("DEBUG", 0):
@@ -30,6 +31,7 @@ db_models.base.create_tables()
 app.register_blueprint(events_bp)
 app.register_blueprint(livefeed_bp)
 app.register_blueprint(stats_bp)
+app.register_blueprint(login_bp)
 
 
 # Serve React build files
