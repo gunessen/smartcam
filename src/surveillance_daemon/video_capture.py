@@ -1,3 +1,5 @@
+import logging
+
 import cv2
 
 
@@ -19,6 +21,7 @@ class VideoCapture:
         self.height = height
         self.fps = fps
         self.cap = None
+        self.logger = logging.getLogger(__name__)
 
     def __enter__(self):
         """Open the camera when entering the context"""
@@ -32,7 +35,7 @@ class VideoCapture:
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Release the camera when exiting the context"""
         if self.cap:
-            print("Releasing camera")
+            self.logger.info("Releasing camera")
             self.release()
 
     def get_fps(self):

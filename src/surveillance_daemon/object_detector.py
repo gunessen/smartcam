@@ -1,4 +1,5 @@
 import importlib
+import logging
 import platform
 import time
 
@@ -32,10 +33,10 @@ class ModelConfig:
             "is_yolo": False,
         },
         "efficientdet-lite1": {
-            "model_path": "../models/efficientdet-lite/efficientdet-lite1-detection-default.tflite",
+            "model_path": "./models/efficientdet-lite/efficientdet-lite1-detection-default.tflite",
             "input_width": 384,
             "input_height": 384,
-            "classes_path": "../data/coco-efficientdet.names",
+            "classes_path": "./data/coco-efficientdet.names",
             "is_yolo": False,
         },
         "ssd-mobilenet-v1": {
@@ -109,6 +110,7 @@ class ObjectDetector:
         self.input_width = input_width
         self.input_height = input_height
         self.is_yolo = is_yolo
+        self.logger = logging.getLogger(__name__)
 
         # Determine CPU type or system constraint
         arch = platform.machine()
@@ -396,7 +398,7 @@ class ObjectDetector:
         """
         cap = cv2.VideoCapture(in_video_path)
         if not cap.isOpened():
-            print(f"Failed to open video: {in_video_path}")
+            self.logger.error(f"Failed to open video: {in_video_path}")
             return
 
         # Get the frame width, height, and FPS
@@ -452,12 +454,11 @@ class ObjectDetector:
                 out.write(frame)
 
             processed_frames += 1
-            # print(f"Processed {processed_frames}/{total_frames} frames", end="\n")
 
         cap.release()
         if store_out_video:
             out.release()
-            print(f"Released the video: {output_path}")
+            self.logger.info(f"Released the video: {output_path}")
 
         # Calculate processing time and FPS
         end_time = time.time()

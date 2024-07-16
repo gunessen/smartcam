@@ -19,3 +19,15 @@ def authenticate_user(username: str, password: str):
         return True
 
     return False
+
+
+def get_emails():
+    """
+    Get emails of all users
+
+    :return: list
+    """
+    session = Session()
+    users = session.query(User).all()
+    session.close()
+    return [user.email for user in users]

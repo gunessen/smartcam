@@ -44,3 +44,4 @@ python -m pip install tensorflow==2.15.0
 # Install SQLite
 # python -m pip install pysqlite3==0.5.3
 python -m pip install pycocotools==2.0.8
+python -m pip install mailjet_rest==1.3.4

@@ -1,3 +1,4 @@
+import logging
 import os
 import queue
 import threading
@@ -33,13 +34,14 @@ class VideoRecorder:
         self.stop_event = threading.Event()
         self.thread = threading.Thread(target=self._write_frames)
         self.thread.start()
+        self.logger = logging.getLogger(__name__)
 
     def _write_frames(self):
         """Processing loop to write frames to the video from the queue."""
         while not self.stop_event.is_set():
             try:
                 frame = self.captured_frames_queue.get(timeout=0.1)
-                print(f"Writing frame to the video: {self.output_path}")
+                self.logger.debug(f"Writing frame to the video: {self.output_path}")
                 self.out.write(frame)
             except queue.Empty:
                 continue
@@ -47,7 +49,7 @@ class VideoRecorder:
     def write_frame(self, frame):
         """Write a frame to the video."""
         if self.recording:
-            print("Adding frame to the queue")
+            self.logger.debug("Adding frame to the queue")
             self.captured_frames_queue.put(frame)
 
     def release(self):
@@ -62,7 +64,7 @@ class VideoRecorder:
             self.out.write(frame)
 
         self.out.release()
-        print(f"Released the video: {self.output_path}")
+        self.logger.info(f"Released the video: {self.output_path}")
 
     def get_video_path(self):
         """Get the path to the video."""
