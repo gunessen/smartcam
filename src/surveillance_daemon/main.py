@@ -106,12 +106,8 @@ def main():
             if frame is None:
                 break
 
-            # font = cv2.FONT_HERSHEY_SIMPLEX
-            # color = (0, 255, 0)
-
             # Detect motion and start recording video
             if motion_detector.detect_motion(frame):
-                # cv2.putText(frame, "M", (10, 30), font, 0.5, color, 2)
                 if not recording:
                     logger.info("Start recording.")
                     recording = True
@@ -131,7 +127,6 @@ def main():
 
             # Record video for 5 seconds
             if recording:
-                # cv2.putText(frame, "R", (30, 30), font, 0.5, color, 2)
                 video_recorder.write_frame(frame)
                 video_length = (datetime.now(UTC) - event_time).total_seconds()
                 if video_length > 5:
@@ -146,12 +141,6 @@ def main():
                     recording = False
                     video_recorder.release()
                     del video_recorder
-
-            # cv2.imshow("Object detection", frame)
-            # if cv2.waitKey(1) == 27:
-            #     break
-
-        # cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":

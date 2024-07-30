@@ -439,16 +439,21 @@ class ObjectDetector:
             if self.is_yolo:
                 input_data = np.expand_dims(frame_resized, axis=0).astype(np.float32) / 255.0
 
+            # Process the frame and return the detected objects
             detected_objects, _ = self.process_frame(
                 frame=input_data,
                 frame_width=frame_width,
                 frame_height=frame_height,
                 threshold=threshold,
             )
+
+            # flatten the detected objects
             for obj in detected_objects:
                 event_objects[obj.category] = max(
                     obj.confidence, event_objects.get(obj.category, 0)
                 )
+
+            # Draw bounding boxes on the frame and write to the output video
             frame = self.draw_frame_bounding_boxes(frame, detected_objects)
             if store_out_video:
                 out.write(frame)
