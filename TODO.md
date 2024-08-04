@@ -1,16 +1,25 @@
-- SUS: Info popover on dashboard terms like CPU, RAM, etc
-
 - Settings page
-
+  - Frontend design
+  - Common service
   - Motion detection sensitivity
+  - Model type
   - Camera resolution
-  - Notification active/not
+  - Camera FPS
+  - Recording length
+  - Notifications active/not
   - Notification MailJet API/Key entry
+
+- SUS: Info popover on dashboard terms like CPU, RAM, etc
   - Info popover on settings
+  - Info popover in stats
 
 - Setup
-
   - Instructions
   - Generalization
 
-- Vectorization to improve performance
+- Object detection vectorization to improve performance
+
+- Reporting enhancements
+  - Workplan
+  - Input
+  - SUS results

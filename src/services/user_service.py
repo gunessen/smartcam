@@ -1,5 +1,5 @@
 from db_models.base import Session
-from db_models.models import Event, User
+from db_models.models import User
 
 
 def authenticate_user(username: str, password: str):
@@ -12,7 +12,7 @@ def authenticate_user(username: str, password: str):
     """
     session = Session()
     user = (
-        session.query(Event).filter(User.username == username and User.password == password).first()
+        session.query(User).filter(User.username == username and User.password == password).first()
     )
     session.close()
     if user:
