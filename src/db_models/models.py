@@ -24,3 +24,11 @@ class User(Base):
     password = Column(String, nullable=False)
     email = Column(String, nullable=False)
     created_at = Column(String, nullable=False, default=datetime.datetime.now(datetime.UTC))
+
+
+class Settings(Base):
+    __tablename__ = "settings"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    setting_name = Column(String, nullable=False)
+    setting_value = Column(String, nullable=False)

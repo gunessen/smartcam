@@ -7,6 +7,7 @@ import db_models.base
 from backend.routes.events import events_bp
 from backend.routes.livefeed import livefeed_bp
 from backend.routes.login import login_bp
+from backend.routes.settings import settings_bp
 from backend.routes.stats import stats_bp
 
 if os.environ.get("DEBUG", 0):
@@ -32,6 +33,7 @@ app.register_blueprint(events_bp)
 app.register_blueprint(livefeed_bp)
 app.register_blueprint(stats_bp)
 app.register_blueprint(login_bp)
+app.register_blueprint(settings_bp)
 
 
 # Serve React build files

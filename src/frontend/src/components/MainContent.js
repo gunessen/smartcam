@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import Livefeed from "./Livefeed";
 import Events from "./Events";
 import EventDetails from "./EventDetails";
+import Settings from "./Settings";
 
 const MainContent = () => {
   return (
@@ -14,6 +15,7 @@ const MainContent = () => {
         <Route path="/livefeed" element={<Livefeed />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetails />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </Box>
   );

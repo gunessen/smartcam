@@ -41,6 +41,15 @@ const Sidebar = () => {
       >
         Events
       </Button>
+      <Button
+        as={NavLink}
+        to="/settings"
+        colorScheme="teal"
+        variant="ghost"
+        _activeLink={{ fontWeight: "bold", color: "teal.600", bg: "teal.200" }}
+      >
+        Settings
+      </Button>
       <Button onClick={handleLogout} colorScheme="teal" variant="ghost">
         Logout
       </Button>
