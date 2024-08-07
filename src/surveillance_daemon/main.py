@@ -8,15 +8,19 @@ from object_detector import ModelConfig, ObjectDetector
 
 from db_models.base import create_tables
 from services.event_service import add_event
+from services.settings_service import get_settings
 from surveillance_daemon.motion_detector import MotionDetector
 from surveillance_daemon.notification import Notification
 from surveillance_daemon.video_capture import VideoCapture
 from surveillance_daemon.video_recorder import VideoRecorder
 
+# Initialize settings
+settings = get_settings()
+
 # Initialize the database session
 create_tables()
 
-current_model = ModelConfig.get_config("efficientdet-lite1")
+current_model = ModelConfig.get_config(settings["object_detection_model"])
 object_detector = ObjectDetector(
     model_path=current_model["model_path"],
     input_width=current_model["input_width"],
@@ -26,7 +30,9 @@ object_detector = ObjectDetector(
     num_threads=4,
 )
 motion_detector = MotionDetector()
-notification = Notification()
+notification = Notification(
+    mailjet_api_key=settings["mailjet_api_key"], mailjet_secret_key=settings["mailjet_secret_key"]
+)
 
 # Queue to store video paths to be processed
 unannotated_video_queue = queue.Queue()
@@ -63,7 +69,8 @@ def worker():
         if detected_objects:
             logger.info(f"Detected objects: {detected_objects}")
             add_event(video_path, detected_objects, event_time, video_length)
-            notification.send(detected_objects)
+            if int(settings["notifications_active"]) == 1:
+                notification.send(detected_objects)
         else:
             logger.info("No objects detected, deleting video.")
             os.remove(video_path)
@@ -95,8 +102,12 @@ def main():
     recording = False
     event_time = None
 
+    camera_width = int(settings["camera_resolution"].split("x")[0])
+    camera_height = int(settings["camera_resolution"].split("x")[1])
+    camera_fps = int(settings["camera_fps"])
+
     # Start the camera
-    with VideoCapture(device=0) as camera:
+    with VideoCapture(device=0, width=camera_width, height=camera_height, fps=camera_fps) as camera:
         # Frame processing loop
         while True:
             # Read the frame from the camera
@@ -129,7 +140,7 @@ def main():
             if recording:
                 video_recorder.write_frame(frame)
                 video_length = (datetime.now(UTC) - event_time).total_seconds()
-                if video_length > 5:
+                if video_length > int(settings["recording_length"]):
                     logger.info("Stop recording.")
                     video_recorder.stop_recording()
                     # Start object detection on a separate thread when video recording stops

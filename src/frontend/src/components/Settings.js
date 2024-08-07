@@ -158,13 +158,13 @@ const Settings = () => {
                 placeholder="Select model"
                 borderColor="gray.400"
               >
-                <option value="efficientdet_lite1">EfficientDet Lite 1</option>
-                <option value="efficientdet_lite2">EfficientDet Lite 2</option>
-                <option value="efficientdet_lite3">EfficientDet Lite 3</option>
-                <option value="efficientdet_lite4">EfficientDet Lite 4</option>
-                <option value="ssd_mobilenet_v1">SSD MobileNet v1</option>
-                <option value="yolov5_small">YOLOv5 Small</option>
-                <option value="yolov5_nano">YOLOv5 Nano</option>
+                <option value="efficientdet-lite1">EfficientDet Lite 1</option>
+                <option value="efficientdet-lite2">EfficientDet Lite 2</option>
+                <option value="efficientdet-lite3">EfficientDet Lite 3</option>
+                <option value="efficientdet-lite4">EfficientDet Lite 4</option>
+                <option value="ssd-mobilenet-v1">SSD MobileNet v1</option>
+                <option value="yolov5-small">YOLOv5 Small</option>
+                <option value="yolov5-nano">YOLOv5 Nano</option>
               </Select>
             </GridItem>
           </Grid>

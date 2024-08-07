@@ -33,10 +33,10 @@ class ModelConfig:
             "is_yolo": False,
         },
         "efficientdet-lite1": {
-            "model_path": "./models/efficientdet-lite/efficientdet-lite1-detection-default.tflite",
+            "model_path": "../models/efficientdet-lite/efficientdet-lite1-detection-default.tflite",
             "input_width": 384,
             "input_height": 384,
-            "classes_path": "./data/coco-efficientdet.names",
+            "classes_path": "../data/coco-efficientdet.names",
             "is_yolo": False,
         },
         "ssd-mobilenet-v1": {

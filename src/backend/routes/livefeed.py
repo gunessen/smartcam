@@ -1,6 +1,7 @@
 import cv2
 from flask import Blueprint, Response
 
+from services.settings_service import get_settings
 from surveillance_daemon.video_capture import VideoCapture
 
 livefeed_bp = Blueprint("livefeed", __name__)
@@ -9,8 +10,14 @@ camera = None
 
 
 def generate_frames():
+    """Generate video frames from the camera."""
+    settings = get_settings()
+    width = int(settings["camera_resolution"].split("x")[0])
+    height = int(settings["camera_resolution"].split("x")[1])
+    fps = int(settings["camera_fps"])
+
     global camera
-    with VideoCapture(device=0) as camera_instance:
+    with VideoCapture(device=0, width=width, height=height, fps=fps) as camera_instance:
         camera = camera_instance
         while True:
             frame = camera.read_frame()
