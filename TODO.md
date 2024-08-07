@@ -16,7 +16,7 @@
 
 - SUS: Info popover on dashboard terms like CPU, RAM, etc
   + Info popover on settings
-  - Info popover in stats
+  + Info popover in stats
 
 - Setup
   - Instructions
