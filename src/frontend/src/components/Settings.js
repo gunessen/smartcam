@@ -19,6 +19,7 @@ import {
   PopoverHeader,
   PopoverBody,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import Breadcrumbs from "./Breadcrumbs";
@@ -38,6 +39,8 @@ const Settings = () => {
 
   // State to manage settings
   const [settings, setSettings] = useState(defaultSettings);
+
+  const toast = useToast();
 
   // Fetch settings on component mount
   useEffect(() => {
@@ -62,8 +65,27 @@ const Settings = () => {
 
   // Function to save current settings
   const handleSave = () => {
-    console.log("Saving current settings", settings);
-    // Implement save logic here
+    axios
+      .put("/api/v1/settings", settings)
+      .then((response) => {
+        toast({
+          title: "Settings saved",
+          description: "Your settings have been saved successfully.",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        console.error("Error saving settings: ", error);
+        toast({
+          title: "Error saving settings",
+          description: "An error occurred while saving your settings.",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      });
   };
 
   return (
@@ -132,7 +154,7 @@ const Settings = () => {
             <GridItem>
               <Select
                 value={settings.object_detection_model}
-                onChange={(e) => setSettings({ ...settings, objectDetectionModel: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, object_detection_model: e.target.value })}
                 placeholder="Select model"
                 borderColor="gray.400"
               >
@@ -171,7 +193,7 @@ const Settings = () => {
             <GridItem>
               <Select
                 value={settings.camera_resolution}
-                onChange={(e) => setSettings({ ...settings, cameraResolution: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, camera_resolution: e.target.value })}
                 placeholder="Select resolution"
                 borderColor="gray.400"
               >
@@ -207,7 +229,7 @@ const Settings = () => {
             <GridItem>
               <Select
                 value={settings.camera_fps}
-                onChange={(e) => setSettings({ ...settings, cameraFPS: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, camera_fps: e.target.value })}
                 placeholder="Select FPS"
                 borderColor="gray.400"
               >
@@ -243,7 +265,7 @@ const Settings = () => {
             <GridItem>
               <Select
                 value={settings.recording_length}
-                onChange={(e) => setSettings({ ...settings, recordingLength: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, recording_length: e.target.value })}
                 placeholder="Select length (s)"
                 borderColor="gray.400"
               >
@@ -276,7 +298,7 @@ const Settings = () => {
             <GridItem>
               <Checkbox
                 isChecked={settings.notifications_active}
-                onChange={(e) => setSettings({ ...settings, notificationsActive: e.target.checked })}
+                onChange={(e) => setSettings({ ...settings, notifications_active: e.target.checked })}
                 borderColor="gray.400"
               />
             </GridItem>
@@ -303,7 +325,7 @@ const Settings = () => {
             <GridItem>
               <Input
                 value={settings.mailjet_api_key}
-                onChange={(e) => setSettings({ ...settings, mailjetApiKey: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, mailjet_api_key: e.target.value })}
                 placeholder="Enter your Mailjet API key"
                 borderColor="gray.400"
               />
@@ -331,7 +353,7 @@ const Settings = () => {
             <GridItem>
               <Input
                 value={settings.mailjet_secret_key}
-                onChange={(e) => setSettings({ ...settings, mailjetSecretKey: e.target.value })}
+                onChange={(e) => setSettings({ ...settings, mailjet_secret_key: e.target.value })}
                 placeholder="Enter your Mailjet Secret key"
                 borderColor="gray.400"
               />

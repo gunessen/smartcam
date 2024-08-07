@@ -8,11 +8,11 @@
   + Recording length
   + Notifications active/not
   + Notification MailJet API/Key entry
-  - Save functionality
+  + Save functionality
   - Use settings in the daemon
 
 - SUS: Info popover on dashboard terms like CPU, RAM, etc
-  - Info popover on settings
+  + Info popover on settings
   - Info popover in stats
 
 - Setup
