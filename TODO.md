@@ -14,7 +14,7 @@
       self.secret_key = mailjet_secret_key  # "343e0001a0c66cb8fc1195087d9125bf"
 
 
-- SUS: Info popover on dashboard terms like CPU, RAM, etc
++ SUS: Info popover on dashboard terms like CPU, RAM, etc
   + Info popover on settings
   + Info popover in stats
 
