@@ -61,36 +61,24 @@ The system architecture follows a modular approach:
 
 2. Install dependencies:
     ```bash
-    sudo apt-get update
-    sudo apt-get install python3-pip
-    pip3 install -r requirements.txt
+    sudo apt update -y
+    sudo apt install libopencv-dev python3-opencv -y
+    sudo apt install python3-sqlalchemy python3-flask python3-flask-sqlalchemy python3-flask-cors python3-marshmallow python3-psutil -y
+    sudo apt install python3-numpy libopenblas-dev python3-pip python3-venv -y
+    pip install mailjet_rest==1.3.4
     ```
 
-3. Set up the database:
+3. Start the backend server:
     ```bash
-    python3 src/db_models/init_db.py
+    make start_prod
     ```
 
-4. Start the backend server:
+4. Start the surveillance daemon:
     ```bash
-    cd src/backend
-    python3 app.py
+    make start_daemon
     ```
 
-5. Start the surveillance daemon:
-    ```bash
-    cd src/surveillance_daemon
-    python3 main.py
-    ```
-
-6. Start the frontend:
-    ```bash
-    cd src/frontend
-    npm install
-    npm start
-    ```
-
-7. Access the web interface at `http://<your-pi-ip>:3000` in your browser.
+5. Access the web interface at `http://<your-pi-ip>:5000` in your browser.
 
 ## Configuration
 
