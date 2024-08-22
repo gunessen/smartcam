@@ -23,4 +23,5 @@ sudo apt install python3-numpy libopenblas-dev python3-pip python3-venv -y
 # python3 -m venv ~/.smartcam
 # source ~/.smartcam/bin/activate
 
-pip install mailjet_rest==1.3.4
+pip install mailjet_rest==1.3.4 --break-system-packages
+pip install tflite-runtime==2.14.0 --break-system-packages

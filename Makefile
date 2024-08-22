@@ -17,7 +17,7 @@ start_frontend_dev:
 	cd src/frontend && GENERATE_SOURCEMAP=false npm start
 
 start_prod:
-	PYTHONPATH=src DEBUG=0 flask --app=src/backend/app run --host=0.0.0.0 --port=5000
+	PYTHONPATH=src DEBUG=0 OPENCV_LOG_LEVEL=ERROR flask --app=src/backend/app run --host=0.0.0.0 --port=5000
 
 start_daemon:
 	cd src && PYTHONPATH=. python surveillance_daemon/main.py

@@ -385,7 +385,7 @@ class ObjectDetector:
         in_video_path: str,
         store_out_video=True,
         threshold=0.5,
-        output_codec="VP90",
+        output_codec="VP80",
         output_ext="webm",
     ) -> set[str]:
         """
@@ -396,6 +396,7 @@ class ObjectDetector:
         :param threshold: the confidence threshold
         :return: the detected objects and the path to the annotated video
         """
+        self.logger.info("Start processing video.")
         cap = cv2.VideoCapture(in_video_path)
         if not cap.isOpened():
             self.logger.error(f"Failed to open video: {in_video_path}")
@@ -426,6 +427,7 @@ class ObjectDetector:
         event_objects = dict()
         processed_frames = 0
         start_time = time.time()
+        total_processing_time = 0
 
         # Process each frame in the video
         while cap.isOpened():
@@ -440,12 +442,13 @@ class ObjectDetector:
                 input_data = np.expand_dims(frame_resized, axis=0).astype(np.float32) / 255.0
 
             # Process the frame and return the detected objects
-            detected_objects, _ = self.process_frame(
+            detected_objects, processing_time = self.process_frame(
                 frame=input_data,
                 frame_width=frame_width,
                 frame_height=frame_height,
                 threshold=threshold,
             )
+            total_processing_time += processing_time
 
             # flatten the detected objects
             for obj in detected_objects:
@@ -460,8 +463,14 @@ class ObjectDetector:
 
             processed_frames += 1
 
+            # Log the processing time every 5 frames
+            if processed_frames % 5 == 0:
+                self.logger.info(
+                    f"Processed {processed_frames} frames with FPS: {processed_frames / total_processing_time:.2f}"
+                )
+
         cap.release()
-        if store_out_video:
+        if store_out_video and event_objects:
             out.release()
             self.logger.info(f"Released the video: {output_path}")
 
